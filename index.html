@@ -1,284 +1,378 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AmbagMate</title>
+
   <style>
-    body {
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd);
-      min-height: 100vh;
     }
 
-    .container {
-      max-width: 850px;
-      margin: auto;
-      background: white;
-      padding: 25px;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    body{
+      background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
+      min-height:100vh;
+      padding:20px;
     }
 
-    h1 {
-      text-align: center;
-      color: #ff6b6b;
-      font-size: 38px;
-      margin-bottom: 5px;
+    .container{
+      max-width:900px;
+      margin:auto;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 25px;
+    .header{
+      background:white;
+      padding:25px;
+      border-radius:25px;
+      margin-bottom:20px;
+      text-align:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
     }
 
-    h3 {
-      color: #2f80ed;
-      margin-top: 25px;
+    .header h1{
+      color:#ff4d6d;
+      font-size:42px;
     }
 
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      font-size: 15px;
-      box-sizing: border-box;
+    .header p{
+      color:#666;
+      margin-top:8px;
     }
 
-    button {
-      background: linear-gradient(135deg, #ff6b6b, #feca57);
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:25px;
+      margin-bottom:20px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.12);
     }
 
-    button:hover {
-      opacity: 0.9;
+    h2{
+      color:#5f27cd;
+      margin-bottom:15px;
     }
 
-    .section {
-      background: #f8fbff;
-      padding: 18px;
-      border-radius: 18px;
-      margin-top: 15px;
-      border-left: 6px solid #54a0ff;
+    input, select{
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid #ddd;
+      margin-top:10px;
+      font-size:15px;
     }
 
-    .friend-card {
-      display: inline-block;
-      background: #dff9fb;
-      color: #130f40;
-      padding: 10px 15px;
-      border-radius: 20px;
-      margin: 5px;
-      font-weight: bold;
+    button{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:14px;
+      margin-top:15px;
+      background:linear-gradient(135deg,#ff4d6d,#ff9f43);
+      color:white;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
     }
 
-    .expense-card {
-      background: linear-gradient(135deg, #fdfbfb, #ebedee);
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 15px;
-      border-left: 6px solid #ff9f43;
+    button:hover{
+      transform:scale(1.02);
     }
 
-    .expense-card strong {
-      color: #ee5253;
+    .friends{
+      margin-top:15px;
     }
 
-    .result-card {
-      background: #e8fff1;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 15px;
-      border-left: 6px solid #1dd1a1;
-      font-weight: bold;
+    .friend{
+      display:inline-block;
+      background:#eef2ff;
+      color:#5f27cd;
+      padding:10px 16px;
+      border-radius:30px;
+      margin:5px;
+      font-weight:bold;
     }
 
-    .owe-card {
-      background: #fff3cd;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 15px;
-      border-left: 6px solid #feca57;
+    .expense{
+      background:#f8f9ff;
+      border-left:6px solid #ff9f43;
+      padding:18px;
+      border-radius:18px;
+      margin-top:12px;
     }
+
+    .expense h3{
+      color:#ff4d6d;
+      margin-bottom:5px;
+    }
+
+    .summary{
+      background:#e8fff1;
+      border-left:6px solid #10ac84;
+      padding:18px;
+      border-radius:18px;
+      margin-top:15px;
+      font-weight:bold;
+    }
+
+    .owe{
+      background:#fff4df;
+      border-left:6px solid #feca57;
+      padding:18px;
+      border-radius:18px;
+      margin-top:12px;
+    }
+
+    .trip-name{
+      font-size:28px;
+      color:#222;
+      margin-top:10px;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>AmbagMate</h1>
-    <p class="subtitle">Para klaro ang ambagan. No more “kinsa akong bayran?”</p>
 
-    <div class="section">
-      <h3>Add Friend</h3>
-      <input type="text" id="friendName" placeholder="Enter friend name">
-      <button onclick="addFriend()">Add Friend</button>
-      <div id="friendList"></div>
-    </div>
+<div class="container">
 
-    <div class="section">
-      <h3>Add Expense</h3>
-      <select id="payer"></select>
-      <input type="number" id="amount" placeholder="Amount paid">
-      <input type="text" id="description" placeholder="Example: Lunch, boat fare, hotel">
-      <button onclick="addExpense()">Add Expense</button>
-    </div>
+  <div class="header">
+    <h1>🌴 AmbagMate</h1>
+    <p>No more “kinsa akong bayran?” moments.</p>
 
-    <div class="section">
-      <h3>All Expenses Added</h3>
-      <div id="expenseList">
-        <p>No expenses added yet.</p>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>Final Computation</h3>
-      <button onclick="calculateSplit()">Calculate Who Owes Who</button>
-      <div id="result"></div>
-    </div>
+    <input type="text" id="tripName" placeholder="Enter Trip Name">
+    <div class="trip-name" id="tripDisplay"></div>
   </div>
 
-  <script>
-    let friends = [];
-    let expenses = [];
+  <div class="card">
+    <h2>👥 Add Friends</h2>
 
-    function addFriend() {
-      const name = document.getElementById("friendName").value.trim();
+    <input type="text" id="friendName" placeholder="Enter friend name">
 
-      if (name === "") {
-        alert("Please enter a name.");
-        return;
-      }
+    <button onclick="addFriend()">Add Friend</button>
 
-      friends.push(name);
-      document.getElementById("friendName").value = "";
+    <div class="friends" id="friendList"></div>
+  </div>
 
-      updateFriendList();
-      updatePayerDropdown();
-    }
+  <div class="card">
+    <h2>💸 Add Expense</h2>
 
-    function updateFriendList() {
-      const list = document.getElementById("friendList");
-      list.innerHTML = "";
+    <select id="payer"></select>
 
-      friends.forEach(friend => {
-        list.innerHTML += `<div class="friend-card">👤 ${friend}</div>`;
+    <input type="number" id="amount" placeholder="Amount Paid">
+
+    <input type="text" id="description" placeholder="Description">
+
+    <button onclick="addExpense()">Add Expense</button>
+  </div>
+
+  <div class="card">
+    <h2>📋 All Expenses</h2>
+
+    <div id="expenseList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🧮 Final Split</h2>
+
+    <button onclick="calculateSplit()">
+      Calculate Split
+    </button>
+
+    <div id="result"></div>
+  </div>
+
+</div>
+
+<script>
+
+let friends = [];
+let expenses = [];
+
+document.getElementById("tripName").addEventListener("input", function(){
+  document.getElementById("tripDisplay").innerHTML =
+    "✈️ " + this.value;
+});
+
+function addFriend(){
+
+  let name =
+    document.getElementById("friendName").value.trim();
+
+  if(name === ""){
+    alert("Enter a name");
+    return;
+  }
+
+  friends.push(name);
+
+  document.getElementById("friendName").value = "";
+
+  updateFriends();
+  updateDropdown();
+}
+
+function updateFriends(){
+
+  let html = "";
+
+  friends.forEach(friend => {
+    html += `
+      <div class="friend">
+        👤 ${friend}
+      </div>
+    `;
+  });
+
+  document.getElementById("friendList").innerHTML = html;
+}
+
+function updateDropdown(){
+
+  let dropdown =
+    document.getElementById("payer");
+
+  dropdown.innerHTML = "";
+
+  friends.forEach(friend => {
+    dropdown.innerHTML += `
+      <option value="${friend}">
+        ${friend}
+      </option>
+    `;
+  });
+}
+
+function addExpense(){
+
+  let payer =
+    document.getElementById("payer").value;
+
+  let amount =
+    parseFloat(document.getElementById("amount").value);
+
+  let description =
+    document.getElementById("description").value;
+
+  if(isNaN(amount) || amount <= 0){
+    alert("Enter valid amount");
+    return;
+  }
+
+  expenses.push({
+    payer,
+    amount,
+    description
+  });
+
+  document.getElementById("amount").value = "";
+  document.getElementById("description").value = "";
+
+  updateExpenses();
+}
+
+function updateExpenses(){
+
+  let html = "";
+
+  expenses.forEach((expense,index)=>{
+
+    html += `
+      <div class="expense">
+        <h3>Expense #${index+1}</h3>
+
+        <p><strong>${expense.payer}</strong>
+        paid <strong>₱${expense.amount.toFixed(2)}</strong></p>
+
+        <p>${expense.description}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("expenseList").innerHTML = html;
+}
+
+function calculateSplit(){
+
+  let total = 0;
+
+  expenses.forEach(expense=>{
+    total += expense.amount;
+  });
+
+  let share = total / friends.length;
+
+  let balances = {};
+
+  friends.forEach(friend=>{
+    balances[friend] = -share;
+  });
+
+  expenses.forEach(expense=>{
+    balances[expense.payer] += expense.amount;
+  });
+
+  let debtors = [];
+  let creditors = [];
+
+  for(let person in balances){
+
+    if(balances[person] < 0){
+      debtors.push({
+        name: person,
+        amount: -balances[person]
       });
     }
 
-    function updatePayerDropdown() {
-      const payer = document.getElementById("payer");
-      payer.innerHTML = "";
-
-      friends.forEach(friend => {
-        payer.innerHTML += `<option value="${friend}">${friend}</option>`;
+    else if(balances[person] > 0){
+      creditors.push({
+        name: person,
+        amount: balances[person]
       });
     }
+  }
 
-    function addExpense() {
-      const payer = document.getElementById("payer").value;
-      const amount = parseFloat(document.getElementById("amount").value);
-      const description = document.getElementById("description").value.trim();
+  let html = `
+    <div class="summary">
+      Total Expenses: ₱${total.toFixed(2)}<br>
+      Each Person Should Pay: ₱${share.toFixed(2)}
+    </div>
+  `;
 
-      if (friends.length === 0) {
-        alert("Please add friends first.");
-        return;
-      }
+  debtors.forEach(debtor=>{
 
-      if (!payer || isNaN(amount) || amount <= 0) {
-        alert("Please enter a valid expense.");
-        return;
-      }
+    creditors.forEach(creditor=>{
 
-      expenses.push({
-        payer: payer,
-        amount: amount,
-        description: description || "Expense"
-      });
+      if(debtor.amount > 0 && creditor.amount > 0){
 
-      document.getElementById("amount").value = "";
-      document.getElementById("description").value = "";
+        let payment =
+          Math.min(debtor.amount, creditor.amount);
 
-      updateExpenseList();
-    }
+        html += `
+          <div class="owe">
+            💸 ${debtor.name} owes
+            ${creditor.name}
 
-    function updateExpenseList() {
-      const list = document.getElementById("expenseList");
-      list.innerHTML = "";
-
-      expenses.forEach((expense, index) => {
-        list.innerHTML += `
-          <div class="expense-card">
-            <strong>Expense ${index + 1}</strong><br>
-            ${expense.payer} paid <strong>₱${expense.amount.toFixed(2)}</strong><br>
-            For: ${expense.description}
+            <strong>
+              ₱${payment.toFixed(2)}
+            </strong>
           </div>
         `;
-      });
-    }
 
-    function calculateSplit() {
-      if (friends.length === 0 || expenses.length === 0) {
-        alert("Add friends and expenses first.");
-        return;
+        debtor.amount -= payment;
+        creditor.amount -= payment;
       }
+    });
+  });
 
-      let total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-      let share = total / friends.length;
+  document.getElementById("result").innerHTML = html;
+}
 
-      let balances = {};
+</script>
 
-      friends.forEach(friend => {
-        balances[friend] = -share;
-      });
-
-      expenses.forEach(expense => {
-        balances[expense.payer] += expense.amount;
-      });
-
-      let debtors = [];
-      let creditors = [];
-
-      for (let friend in balances) {
-        if (balances[friend] < -0.01) {
-          debtors.push({ name: friend, amount: -balances[friend] });
-        } else if (balances[friend] > 0.01) {
-          creditors.push({ name: friend, amount: balances[friend] });
-        }
-      }
-
-      let resultHTML = `
-        <div class="result-card">
-          Total Expense: ₱${total.toFixed(2)}<br>
-          Each Person's Share: ₱${share.toFixed(2)}
-        </div>
-      `;
-
-      debtors.forEach(debtor => {
-        creditors.forEach(creditor => {
-          if (debtor.amount > 0.01 && creditor.amount > 0.01) {
-            let payment = Math.min(debtor.amount, creditor.amount);
-
-            resultHTML += `
-              <div class="owe-card">
-                💸 ${debtor.name} owes ${creditor.name}: 
-                <strong>₱${payment.toFixed(2)}</strong>
-              </div>
-            `;
-
-            debtor.amount -= payment;
-            creditor.amount -= payment;
-          }
-        });
-      });
-
-      document.getElementById("result").innerHTML = resultHTML;
-    }
-  </script>
 </body>
 </html>
