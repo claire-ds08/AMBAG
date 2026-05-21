@@ -1,82 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trip Splitter</title>
+  <title>AmbagMate</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
+      margin: 0;
       padding: 20px;
+      background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd);
+      min-height: 100vh;
     }
 
     .container {
-      max-width: 700px;
+      max-width: 850px;
       margin: auto;
       background: white;
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
     h1 {
       text-align: center;
+      color: #ff6b6b;
+      font-size: 38px;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    h3 {
+      color: #2f80ed;
+      margin-top: 25px;
     }
 
     input, select, button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 8px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 15px;
+      box-sizing: border-box;
     }
 
     button {
-      background: #2f80ed;
+      background: linear-gradient(135deg, #ff6b6b, #feca57);
       color: white;
       border: none;
+      font-weight: bold;
       cursor: pointer;
     }
 
     button:hover {
-      background: #1c5fb8;
+      opacity: 0.9;
     }
 
-    .card {
-      background: #f9f9f9;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 10px;
+    .section {
+      background: #f8fbff;
+      padding: 18px;
+      border-radius: 18px;
+      margin-top: 15px;
+      border-left: 6px solid #54a0ff;
     }
 
-    .result {
+    .friend-card {
+      display: inline-block;
+      background: #dff9fb;
+      color: #130f40;
+      padding: 10px 15px;
+      border-radius: 20px;
+      margin: 5px;
       font-weight: bold;
-      color: #333;
+    }
+
+    .expense-card {
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 15px;
+      border-left: 6px solid #ff9f43;
+    }
+
+    .expense-card strong {
+      color: #ee5253;
+    }
+
+    .result-card {
+      background: #e8fff1;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 15px;
+      border-left: 6px solid #1dd1a1;
+      font-weight: bold;
+    }
+
+    .owe-card {
+      background: #fff3cd;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 15px;
+      border-left: 6px solid #feca57;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Trip Expense Splitter</h1>
+    <h1>AmbagMate</h1>
+    <p class="subtitle">Para klaro ang ambagan. No more “kinsa akong bayran?”</p>
 
-    <h3>Add Friend</h3>
-    <input type="text" id="friendName" placeholder="Enter friend name">
-    <button onclick="addFriend()">Add Friend</button>
+    <div class="section">
+      <h3>Add Friend</h3>
+      <input type="text" id="friendName" placeholder="Enter friend name">
+      <button onclick="addFriend()">Add Friend</button>
+      <div id="friendList"></div>
+    </div>
 
-    <div id="friendList"></div>
+    <div class="section">
+      <h3>Add Expense</h3>
+      <select id="payer"></select>
+      <input type="number" id="amount" placeholder="Amount paid">
+      <input type="text" id="description" placeholder="Example: Lunch, boat fare, hotel">
+      <button onclick="addExpense()">Add Expense</button>
+    </div>
 
-    <h3>Add Expense</h3>
-    <select id="payer"></select>
-    <input type="number" id="amount" placeholder="Amount paid">
-    <input type="text" id="description" placeholder="Description">
-    <button onclick="addExpense()">Add Expense</button>
+    <div class="section">
+      <h3>All Expenses Added</h3>
+      <div id="expenseList">
+        <p>No expenses added yet.</p>
+      </div>
+    </div>
 
-    <h3>Expenses</h3>
-    <div id="expenseList"></div>
-
-    <h3>Final Computation</h3>
-    <button onclick="calculateSplit()">Calculate Who Owes Who</button>
-    <div id="result"></div>
+    <div class="section">
+      <h3>Final Computation</h3>
+      <button onclick="calculateSplit()">Calculate Who Owes Who</button>
+      <div id="result"></div>
+    </div>
   </div>
 
   <script>
@@ -103,7 +167,7 @@
       list.innerHTML = "";
 
       friends.forEach(friend => {
-        list.innerHTML += `<div class="card">${friend}</div>`;
+        list.innerHTML += `<div class="friend-card">👤 ${friend}</div>`;
       });
     }
 
@@ -119,7 +183,12 @@
     function addExpense() {
       const payer = document.getElementById("payer").value;
       const amount = parseFloat(document.getElementById("amount").value);
-      const description = document.getElementById("description").value;
+      const description = document.getElementById("description").value.trim();
+
+      if (friends.length === 0) {
+        alert("Please add friends first.");
+        return;
+      }
 
       if (!payer || isNaN(amount) || amount <= 0) {
         alert("Please enter a valid expense.");
@@ -129,7 +198,7 @@
       expenses.push({
         payer: payer,
         amount: amount,
-        description: description
+        description: description || "Expense"
       });
 
       document.getElementById("amount").value = "";
@@ -142,11 +211,12 @@
       const list = document.getElementById("expenseList");
       list.innerHTML = "";
 
-      expenses.forEach(expense => {
+      expenses.forEach((expense, index) => {
         list.innerHTML += `
-          <div class="card">
-            ${expense.payer} paid ₱${expense.amount.toFixed(2)} 
-            for ${expense.description}
+          <div class="expense-card">
+            <strong>Expense ${index + 1}</strong><br>
+            ${expense.payer} paid <strong>₱${expense.amount.toFixed(2)}</strong><br>
+            For: ${expense.description}
           </div>
         `;
       });
@@ -175,15 +245,15 @@
       let creditors = [];
 
       for (let friend in balances) {
-        if (balances[friend] < 0) {
+        if (balances[friend] < -0.01) {
           debtors.push({ name: friend, amount: -balances[friend] });
-        } else if (balances[friend] > 0) {
+        } else if (balances[friend] > 0.01) {
           creditors.push({ name: friend, amount: balances[friend] });
         }
       }
 
       let resultHTML = `
-        <div class="card result">
+        <div class="result-card">
           Total Expense: ₱${total.toFixed(2)}<br>
           Each Person's Share: ₱${share.toFixed(2)}
         </div>
@@ -191,13 +261,13 @@
 
       debtors.forEach(debtor => {
         creditors.forEach(creditor => {
-          if (debtor.amount > 0 && creditor.amount > 0) {
+          if (debtor.amount > 0.01 && creditor.amount > 0.01) {
             let payment = Math.min(debtor.amount, creditor.amount);
 
             resultHTML += `
-              <div class="card">
-                ${debtor.name} owes ${creditor.name}: 
-                ₱${payment.toFixed(2)}
+              <div class="owe-card">
+                💸 ${debtor.name} owes ${creditor.name}: 
+                <strong>₱${payment.toFixed(2)}</strong>
               </div>
             `;
 
