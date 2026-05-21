@@ -1,378 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AmbagMate</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
 
-    body{
-      background: linear-gradient(135deg,#667eea,#764ba2,#ff758c);
-      min-height:100vh;
-      padding:20px;
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2, #ff758c);
+      padding: 20px;
     }
 
-    .container{
-      max-width:900px;
-      margin:auto;
+    .container {
+      max-width: 950px;
+      margin: auto;
     }
 
-    .header{
-      background:white;
-      padding:25px;
-      border-radius:25px;
-      margin-bottom:20px;
-      text-align:center;
-      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    .header, .card {
+      background: white;
+      border-radius: 28px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    .header h1{
-      color:#ff4d6d;
-      font-size:42px;
+    .header {
+      text-align: center;
     }
 
-    .header p{
-      color:#666;
-      margin-top:8px;
+    h1 {
+      color: #ff4d6d;
+      font-size: 42px;
+      margin-bottom: 8px;
     }
 
-    .card{
-      background:white;
-      padding:25px;
-      border-radius:25px;
-      margin-bottom:20px;
-      box-shadow:0 8px 20px rgba(0,0,0,0.12);
+    .subtitle {
+      color: #666;
+      margin-bottom: 18px;
     }
 
-    h2{
-      color:#5f27cd;
-      margin-bottom:15px;
+    h2 {
+      color: #5f27cd;
+      margin-bottom: 15px;
     }
 
-    input, select{
-      width:100%;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid #ddd;
-      margin-top:10px;
-      font-size:15px;
+    input, button {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      margin-top: 10px;
     }
 
-    button{
-      width:100%;
-      padding:15px;
-      border:none;
-      border-radius:14px;
-      margin-top:15px;
-      background:linear-gradient(135deg,#ff4d6d,#ff9f43);
-      color:white;
-      font-size:16px;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s;
+    button {
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff4d6d, #ff9f43);
     }
 
-    button:hover{
-      transform:scale(1.02);
+    button:hover {
+      transform: scale(1.02);
     }
 
-    .friends{
-      margin-top:15px;
+    .trip-display {
+      margin-top: 15px;
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
     }
 
-    .friend{
-      display:inline-block;
-      background:#eef2ff;
-      color:#5f27cd;
-      padding:10px 16px;
-      border-radius:30px;
-      margin:5px;
-      font-weight:bold;
+    .friend {
+      display: inline-block;
+      background: #eef2ff;
+      color: #5f27cd;
+      padding: 10px 16px;
+      border-radius: 30px;
+      margin: 6px;
+      font-weight: bold;
     }
 
-    .expense{
-      background:#f8f9ff;
-      border-left:6px solid #ff9f43;
-      padding:18px;
-      border-radius:18px;
-      margin-top:12px;
+    .expense {
+      background: #f8f9ff;
+      border-left: 7px solid #ff9f43;
+      padding: 18px;
+      border-radius: 20px;
+      margin-top: 12px;
     }
 
-    .expense h3{
-      color:#ff4d6d;
-      margin-bottom:5px;
+    .expense h3 {
+      color: #ff4d6d;
+      margin-bottom: 6px;
     }
 
-    .summary{
-      background:#e8fff1;
-      border-left:6px solid #10ac84;
-      padding:18px;
-      border-radius:18px;
-      margin-top:15px;
-      font-weight:bold;
+    .summary {
+      background: #e8fff1;
+      border-left: 7px solid #10ac84;
+      padding: 18px;
+      border-radius: 20px;
+      margin-top: 15px;
     }
 
-    .owe{
-      background:#fff4df;
-      border-left:6px solid #feca57;
-      padding:18px;
-      border-radius:18px;
-      margin-top:12px;
+    .owe {
+      background: #fff4df;
+      border-left: 7px solid #feca57;
+      padding: 18px;
+      border-radius: 20px;
+      margin-top: 12px;
+      font-size: 17px;
     }
 
-    .trip-name{
-      font-size:28px;
-      color:#222;
-      margin-top:10px;
+    .small-note {
+      color: #777;
+      font-size: 14px;
+      margin-top: 8px;
     }
-
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="header">
-    <h1>🌴 AmbagMate</h1>
-    <p>No more “kinsa akong bayran?” moments.</p>
+    <div class="header">
+      <h1>🌴 AmbagMate</h1>
+      <p class="subtitle">No more “kinsa akong bayran?” moments.</p>
 
-    <input type="text" id="tripName" placeholder="Enter Trip Name">
-    <div class="trip-name" id="tripDisplay"></div>
-  </div>
-
-  <div class="card">
-    <h2>👥 Add Friends</h2>
-
-    <input type="text" id="friendName" placeholder="Enter friend name">
-
-    <button onclick="addFriend()">Add Friend</button>
-
-    <div class="friends" id="friendList"></div>
-  </div>
-
-  <div class="card">
-    <h2>💸 Add Expense</h2>
-
-    <select id="payer"></select>
-
-    <input type="number" id="amount" placeholder="Amount Paid">
-
-    <input type="text" id="description" placeholder="Description">
-
-    <button onclick="addExpense()">Add Expense</button>
-  </div>
-
-  <div class="card">
-    <h2>📋 All Expenses</h2>
-
-    <div id="expenseList"></div>
-  </div>
-
-  <div class="card">
-    <h2>🧮 Final Split</h2>
-
-    <button onclick="calculateSplit()">
-      Calculate Split
-    </button>
-
-    <div id="result"></div>
-  </div>
-
-</div>
-
-<script>
-
-let friends = [];
-let expenses = [];
-
-document.getElementById("tripName").addEventListener("input", function(){
-  document.getElementById("tripDisplay").innerHTML =
-    "✈️ " + this.value;
-});
-
-function addFriend(){
-
-  let name =
-    document.getElementById("friendName").value.trim();
-
-  if(name === ""){
-    alert("Enter a name");
-    return;
-  }
-
-  friends.push(name);
-
-  document.getElementById("friendName").value = "";
-
-  updateFriends();
-  updateDropdown();
-}
-
-function updateFriends(){
-
-  let html = "";
-
-  friends.forEach(friend => {
-    html += `
-      <div class="friend">
-        👤 ${friend}
-      </div>
-    `;
-  });
-
-  document.getElementById("friendList").innerHTML = html;
-}
-
-function updateDropdown(){
-
-  let dropdown =
-    document.getElementById("payer");
-
-  dropdown.innerHTML = "";
-
-  friends.forEach(friend => {
-    dropdown.innerHTML += `
-      <option value="${friend}">
-        ${friend}
-      </option>
-    `;
-  });
-}
-
-function addExpense(){
-
-  let payer =
-    document.getElementById("payer").value;
-
-  let amount =
-    parseFloat(document.getElementById("amount").value);
-
-  let description =
-    document.getElementById("description").value;
-
-  if(isNaN(amount) || amount <= 0){
-    alert("Enter valid amount");
-    return;
-  }
-
-  expenses.push({
-    payer,
-    amount,
-    description
-  });
-
-  document.getElementById("amount").value = "";
-  document.getElementById("description").value = "";
-
-  updateExpenses();
-}
-
-function updateExpenses(){
-
-  let html = "";
-
-  expenses.forEach((expense,index)=>{
-
-    html += `
-      <div class="expense">
-        <h3>Expense #${index+1}</h3>
-
-        <p><strong>${expense.payer}</strong>
-        paid <strong>₱${expense.amount.toFixed(2)}</strong></p>
-
-        <p>${expense.description}</p>
-      </div>
-    `;
-  });
-
-  document.getElementById("expenseList").innerHTML = html;
-}
-
-function calculateSplit(){
-
-  let total = 0;
-
-  expenses.forEach(expense=>{
-    total += expense.amount;
-  });
-
-  let share = total / friends.length;
-
-  let balances = {};
-
-  friends.forEach(friend=>{
-    balances[friend] = -share;
-  });
-
-  expenses.forEach(expense=>{
-    balances[expense.payer] += expense.amount;
-  });
-
-  let debtors = [];
-  let creditors = [];
-
-  for(let person in balances){
-
-    if(balances[person] < 0){
-      debtors.push({
-        name: person,
-        amount: -balances[person]
-      });
-    }
-
-    else if(balances[person] > 0){
-      creditors.push({
-        name: person,
-        amount: balances[person]
-      });
-    }
-  }
-
-  let html = `
-    <div class="summary">
-      Total Expenses: ₱${total.toFixed(2)}<br>
-      Each Person Should Pay: ₱${share.toFixed(2)}
+      <input type="text" id="tripName" placeholder="Enter Trip Name" />
+      <div class="trip-display" id="tripDisplay"></div>
     </div>
-  `;
 
-  debtors.forEach(debtor=>{
+    <div class="card">
+      <h2>👥 Add Friends</h2>
+      <input type="text" id="friendName" placeholder="Enter friend name" />
+      <button onclick="addFriend()">Add Friend</button>
+      <div id="friendList"></div>
+    </div>
 
-    creditors.forEach(creditor=>{
+    <div class="card">
+      <h2>💸 Add Expense</h2>
+      <input type="text" id="payer" placeholder="Who paid? Example: Claire" />
+      <input type="number" id="amount" placeholder="Amount paid" />
+      <input type="text" id="description" placeholder="Description: Hotel, food, boat fare..." />
+      <button onclick="addExpense()">Add Expense</button>
+      <p class="small-note">Tip: the payer name should match one of the friends’ names.</p>
+    </div>
 
-      if(debtor.amount > 0 && creditor.amount > 0){
+    <div class="card">
+      <h2>📋 All Expenses</h2>
+      <div id="expenseList"></div>
+    </div>
 
-        let payment =
-          Math.min(debtor.amount, creditor.amount);
+    <div class="card">
+      <h2>🧮 Final Split</h2>
+      <button onclick="calculateSplit()">Calculate Who Owes Who</button>
+      <div id="result"></div>
+    </div>
 
+  </div>
+
+  <script>
+    let friends = [];
+    let expenses = [];
+
+    document.getElementById("tripName").addEventListener("input", function() {
+      let trip = this.value.trim();
+      document.getElementById("tripDisplay").innerHTML = trip ? "✈️ " + trip : "";
+    });
+
+    function addFriend() {
+      let name = document.getElementById("friendName").value.trim();
+
+      if (name === "") {
+        alert("Enter a friend name.");
+        return;
+      }
+
+      friends.push(name);
+      document.getElementById("friendName").value = "";
+      updateFriends();
+    }
+
+    function updateFriends() {
+      let html = "";
+
+      friends.forEach(friend => {
+        html += `<div class="friend">👤 ${friend}</div>`;
+      });
+
+      document.getElementById("friendList").innerHTML = html;
+    }
+
+    function addExpense() {
+      let payer = document.getElementById("payer").value.trim();
+      let amount = parseFloat(document.getElementById("amount").value);
+      let description = document.getElementById("description").value.trim();
+
+      if (friends.length === 0) {
+        alert("Add friends first.");
+        return;
+      }
+
+      if (payer === "") {
+        alert("Enter who paid.");
+        return;
+      }
+
+      if (isNaN(amount) || amount <= 0) {
+        alert("Enter a valid amount.");
+        return;
+      }
+
+      expenses.push({
+        payer: payer,
+        amount: amount,
+        description: description || "Expense"
+      });
+
+      document.getElementById("payer").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("description").value = "";
+
+      updateExpenses();
+    }
+
+    function updateExpenses() {
+      let html = "";
+
+      expenses.forEach((expense, index) => {
         html += `
-          <div class="owe">
-            💸 ${debtor.name} owes
-            ${creditor.name}
-
-            <strong>
-              ₱${payment.toFixed(2)}
-            </strong>
+          <div class="expense">
+            <h3>Expense #${index + 1}</h3>
+            <p>💸 <strong>${expense.payer}</strong> paid <strong>₱${expense.amount.toFixed(2)}</strong></p>
+            <p>📝 ${expense.description}</p>
           </div>
         `;
+      });
 
-        debtor.amount -= payment;
-        creditor.amount -= payment;
+      document.getElementById("expenseList").innerHTML = html;
+    }
+
+    function calculateSplit() {
+      if (friends.length === 0 || expenses.length === 0) {
+        alert("Add friends and expenses first.");
+        return;
       }
-    });
-  });
 
-  document.getElementById("result").innerHTML = html;
-}
+      let total = 0;
 
-</script>
+      expenses.forEach(expense => {
+        total += expense.amount;
+      });
+
+      let share = total / friends.length;
+
+      let balances = {};
+
+      friends.forEach(friend => {
+        balances[friend] = 0;
+      });
+
+      expenses.forEach(expense => {
+        if (balances[expense.payer] === undefined) {
+          balances[expense.payer] = 0;
+        }
+
+        balances[expense.payer] += expense.amount;
+      });
+
+      friends.forEach(friend => {
+        balances[friend] -= share;
+      });
+
+      let debtors = [];
+      let creditors = [];
+
+      for (let person in balances) {
+        if (balances[person] < -0.01) {
+          debtors.push({
+            name: person,
+            amount: Math.abs(balances[person])
+          });
+        }
+
+        if (balances[person] > 0.01) {
+          creditors.push({
+            name: person,
+            amount: balances[person]
+          });
+        }
+      }
+
+      let html = `
+        <div class="summary">
+          <h3>Trip Summary</h3>
+          <p>Total Expenses: <strong>₱${total.toFixed(2)}</strong></p>
+          <p>Each Person's Share: <strong>₱${share.toFixed(2)}</strong></p>
+        </div>
+      `;
+
+      html += `<h3 style="margin-top:20px; color:#5f27cd;">Who Owes Who?</h3>`;
+
+      debtors.forEach(debtor => {
+        creditors.forEach(creditor => {
+          if (debtor.amount > 0.01 && creditor.amount > 0.01) {
+            let payment = Math.min(debtor.amount, creditor.amount);
+
+            html += `
+              <div class="owe">
+                💸 <strong>${debtor.name}</strong> owes 
+                <strong>${creditor.name}</strong> 
+                <strong>₱${payment.toFixed(2)}</strong>
+              </div>
+            `;
+
+            debtor.amount -= payment;
+            creditor.amount -= payment;
+          }
+        });
+      });
+
+      document.getElementById("result").innerHTML = html;
+    }
+  </script>
 
 </body>
 </html>
