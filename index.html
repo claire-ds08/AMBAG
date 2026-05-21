@@ -333,6 +333,181 @@
       document.getElementById("result").innerHTML = html;
     }
   </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPKmuI0SwDmV9CGREIzW1Qw65M1-2z0bo",
+    authDomain: "awmbagan-na.firebaseapp.com",
+    databaseURL: "https://awmbagan-na-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "awmbagan-na",
+    storageBucket: "awmbagan-na.firebasestorage.app",
+    messagingSenderId: "155801535791",
+    appId: "1:155801535791:web:f317add0d4ce70c387cdda"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  const tripRef = ref(db, "trips/mainTrip");
+
+  let friends = [];
+  let expenses = [];
+
+  document.getElementById("tripName").addEventListener("input", function () {
+    set(ref(db, "trips/mainTrip/tripName"), this.value);
+  });
+
+  window.addFriend = function () {
+    let name = document.getElementById("friendName").value.trim();
+
+    if (name === "") {
+      alert("Enter friend name.");
+      return;
+    }
+
+    push(ref(db, "trips/mainTrip/friends"), name);
+    document.getElementById("friendName").value = "";
+  };
+
+  window.addExpense = function () {
+    let payer = document.getElementById("payer").value.trim();
+    let amount = parseFloat(document.getElementById("amount").value);
+    let description = document.getElementById("description").value.trim();
+
+    if (payer === "") {
+      alert("Enter who paid.");
+      return;
+    }
+
+    if (isNaN(amount) || amount <= 0) {
+      alert("Enter valid amount.");
+      return;
+    }
+
+    push(ref(db, "trips/mainTrip/expenses"), {
+      payer: payer,
+      amount: amount,
+      description: description || "Expense"
+    });
+
+    document.getElementById("payer").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("description").value = "";
+  };
+
+  onValue(tripRef, function (snapshot) {
+    const data = snapshot.val() || {};
+
+    document.getElementById("tripDisplay").innerHTML =
+      data.tripName ? "✈️ " + data.tripName : "";
+
+    friends = data.friends ? Object.values(data.friends) : [];
+    expenses = data.expenses ? Object.values(data.expenses) : [];
+
+    updateFriends();
+    updateExpenses();
+    calculateSplit();
+  });
+
+  function updateFriends() {
+    let html = "";
+
+    friends.forEach(friend => {
+      html += `<div class="friend">👤 ${friend}</div>`;
+    });
+
+    document.getElementById("friendList").innerHTML = html;
+  }
+
+  function updateExpenses() {
+    let html = "";
+
+    expenses.forEach((expense, index) => {
+      html += `
+        <div class="expense">
+          <h3>Expense #${index + 1}</h3>
+          <p>💸 <strong>${expense.payer}</strong> paid <strong>₱${Number(expense.amount).toFixed(2)}</strong></p>
+          <p>📝 ${expense.description}</p>
+        </div>
+      `;
+    });
+
+    document.getElementById("expenseList").innerHTML = html;
+  }
+
+  window.calculateSplit = function () {
+    if (friends.length === 0 || expenses.length === 0) {
+      document.getElementById("result").innerHTML = "";
+      return;
+    }
+
+    let total = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
+    let share = total / friends.length;
+
+    let balances = {};
+
+    friends.forEach(friend => {
+      balances[friend] = 0;
+    });
+
+    expenses.forEach(expense => {
+      if (balances[expense.payer] === undefined) {
+        balances[expense.payer] = 0;
+      }
+
+      balances[expense.payer] += Number(expense.amount);
+    });
+
+    friends.forEach(friend => {
+      balances[friend] -= share;
+    });
+
+    let debtors = [];
+    let creditors = [];
+
+    for (let person in balances) {
+      if (balances[person] < -0.01) {
+        debtors.push({ name: person, amount: Math.abs(balances[person]) });
+      }
+
+      if (balances[person] > 0.01) {
+        creditors.push({ name: person, amount: balances[person] });
+      }
+    }
+
+    let html = `
+      <div class="summary">
+        <h3>Trip Summary</h3>
+        <p>Total Expenses: <strong>₱${total.toFixed(2)}</strong></p>
+        <p>Each Person's Share: <strong>₱${share.toFixed(2)}</strong></p>
+      </div>
+    `;
+
+    html += `<h3 style="margin-top:20px; color:#5f27cd;">Who Owes Who?</h3>`;
+
+    debtors.forEach(debtor => {
+      creditors.forEach(creditor => {
+        if (debtor.amount > 0.01 && creditor.amount > 0.01) {
+          let payment = Math.min(debtor.amount, creditor.amount);
+
+          html += `
+            <div class="owe">
+              💸 <strong>${debtor.name}</strong> owes 
+              <strong>${creditor.name}</strong> 
+              <strong>₱${payment.toFixed(2)}</strong>
+            </div>
+          `;
+
+          debtor.amount -= payment;
+          creditor.amount -= payment;
+        }
+      });
+    });
+
+    document.getElementById("result").innerHTML = html;
+  };
+</script>
 </body>
 </html>
